@@ -109,8 +109,8 @@ export class Jaw extends Entity {
             damage: 20,
             x: this.x,
             y: this.y,
-            launchMagnitude: 100,
           });
+
           if (this.spider instanceof Spider) {
             window.ASSET_MANAGER.playAsset("./assets/sfx/spider_attack.wav", 1);
           }

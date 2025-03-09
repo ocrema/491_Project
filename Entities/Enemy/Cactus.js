@@ -216,9 +216,10 @@ export class SpitterCactus extends Cactus {
     super(x, y);
 
     this.thornMaxRange = 2000;
-    this.cactusOffset = 200;
-    this.leftTarget = { x: this.x - this.cactusOffset, y: this.y };
-    this.rightTarget = { x: this.x + this.cactusOffset, y: this.y };
+    this.cactusXOffset = 200;
+    this.cactusYOffest = 30;
+    this.leftTarget = { x: this.x - this.cactusXOffset, y: this.y };
+    this.rightTarget = { x: this.x + this.cactusXOffset, y: this.y };
     this.currentTarget = isLeft ? this.leftTarget : this.rightTarget;
 
     this.attackTime = 0;
@@ -245,6 +246,14 @@ export class SpitterCactus extends Cactus {
       this.attacking = true;
       GAME_ENGINE.addEntity(
         new Thorn(this.x, this.y, this.currentTarget, this.thornMaxRange)
+      );
+      this.topTarget = {x: this.currentTarget.x, y: this.currentTarget.y + this.cactusYOffest};
+      GAME_ENGINE.addEntity(
+        new Thorn(this.x, this.y, this.topTarget, this.thornMaxRange)
+      );
+      this.bottomTarget = {x: this.currentTarget.x, y: this.currentTarget.y - this.cactusYOffest};
+      GAME_ENGINE.addEntity(
+        new Thorn(this.x, this.y, this.bottomTarget, this.thornMaxRange)
       );
     } else if (
       this.attackTime > this.activeFire &&
