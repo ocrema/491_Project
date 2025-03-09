@@ -217,9 +217,12 @@ export class SpitterCactus extends Cactus {
 
     this.thornMaxRange = 2000;
     this.cactusXOffset = 200;
+    // spread of thorns (higher is wider)
     this.cactusYOffest = 30;
-    this.leftTarget = { x: this.x - this.cactusXOffset, y: this.y };
-    this.rightTarget = { x: this.x + this.cactusXOffset, y: this.y };
+    //number of thorns
+    this.numberOfThorns = 5;
+    this.leftTarget = { x: this.x - this.cactusXOffset, y: this.y - this.cactusYOffest};
+    this.rightTarget = { x: this.x + this.cactusXOffset, y: this.y - this.cactusYOffest};
     this.currentTarget = isLeft ? this.leftTarget : this.rightTarget;
 
     this.attackTime = 0;
@@ -244,17 +247,22 @@ export class SpitterCactus extends Cactus {
     ) {
       this.thornTime = 0;
       this.attacking = true;
-      GAME_ENGINE.addEntity(
-        new Thorn(this.x, this.y, this.currentTarget, this.thornMaxRange)
+
+      for (let i = 1; i <= this.numberOfThorns; i++) {
+        let nextTarget = {x: this.currentTarget.x, y: this.currentTarget.y + (this.cactusYOffest * i / this.numberOfThorns)};
+        GAME_ENGINE.addEntity(
+        new Thorn(this.x, this.y, nextTarget, this.thornMaxRange)
       );
-      this.topTarget = {x: this.currentTarget.x, y: this.currentTarget.y + this.cactusYOffest};
-      GAME_ENGINE.addEntity(
-        new Thorn(this.x, this.y, this.topTarget, this.thornMaxRange)
-      );
-      this.bottomTarget = {x: this.currentTarget.x, y: this.currentTarget.y - this.cactusYOffest};
-      GAME_ENGINE.addEntity(
-        new Thorn(this.x, this.y, this.bottomTarget, this.thornMaxRange)
-      );
+      }
+      
+      // this.topTarget = {x: this.currentTarget.x, y: this.currentTarget.y + this.cactusYOffest};
+      // GAME_ENGINE.addEntity(
+      //   new Thorn(this.x, this.y, this.topTarget, this.thornMaxRange)
+      // );
+      // this.bottomTarget = {x: this.currentTarget.x, y: this.currentTarget.y - this.cactusYOffest};
+      // GAME_ENGINE.addEntity(
+      //   new Thorn(this.x, this.y, this.bottomTarget, this.thornMaxRange)
+      // );
     } else if (
       this.attackTime > this.activeFire &&
       this.attackTime < this.fireRate
